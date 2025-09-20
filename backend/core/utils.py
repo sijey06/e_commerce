@@ -3,7 +3,7 @@ from typing import Union
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from models.models import Category, CartItem, Product, User
+from models.models import CartItem, Category, Product, User
 
 
 def get_category(category_id: int, db: Session):

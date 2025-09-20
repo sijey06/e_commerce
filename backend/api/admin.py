@@ -3,14 +3,13 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 
-from models.models import Product, Order
-from schemas.schemas import (ProductCreate, ProductResponse, OrderStatusCreate,
-                             OrderStatusResponse, OrderResponse)
-
 from core.database import get_db
 from core.status import Status
 from core.utils import get_category
-
+from models.models import Order, Product
+from schemas.schemas import (OrderResponse, OrderStatusCreate,
+                             OrderStatusResponse, ProductCreate,
+                             ProductResponse)
 
 app = APIRouter()
 

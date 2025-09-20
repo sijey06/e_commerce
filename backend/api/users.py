@@ -3,11 +3,10 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 
-from models.models import CartItem, User, Order
-from schemas.schemas import CreateOrderSchema, OrderResponse
 from core.database import get_db
 from core.utils import get_user
-
+from models.models import CartItem, Order, User
+from schemas.schemas import CreateOrderSchema, OrderResponse
 
 app = APIRouter()
 

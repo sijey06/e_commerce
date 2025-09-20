@@ -1,6 +1,5 @@
-from sqlalchemy import (Column, Float, Integer, String, Text,
-                        ForeignKey, Table)
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Table, Text
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import Enum
 
 from core.database import Base

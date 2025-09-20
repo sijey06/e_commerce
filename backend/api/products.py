@@ -3,15 +3,14 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from models.models import (Category, CartItem, Product, User,
-                           product_category_association)
-from schemas.schemas import (ProductResponse, CategoryCreate, AddToCartSchema,
-                             UpdateCartItemSchema, ViewCartSchema,
-                             ViewCartItemSchema)
+from core.database import get_db
 from core.utils import (calculate_and_update_cart_item, get_cart_item,
                         get_category, get_product, get_user)
-from core.database import get_db
-
+from models.models import (CartItem, Category, Product, User,
+                           product_category_association)
+from schemas.schemas import (AddToCartSchema, CategoryCreate, ProductResponse,
+                             UpdateCartItemSchema, ViewCartItemSchema,
+                             ViewCartSchema)
 
 app = APIRouter()
 
