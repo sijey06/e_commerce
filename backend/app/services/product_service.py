@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from repositories.product_repository import ProductRepository
-from schemas.product import ProductCreate
+from schemas.product import ProductCreate, ProductResponse
 
 
 class ProductService:
@@ -25,10 +25,9 @@ class ProductService:
         try:
             created_product = await repo.create_product(product_create,
                                                         category_id)
-            return {
-                "message": "Новый товар успешно создан.",
-                "data": created_product
-            }
+            serialized_product = ProductResponse.model_validate(
+                created_product)
+            return serialized_product
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
 

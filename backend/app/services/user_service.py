@@ -45,9 +45,6 @@ class UserService:
         repo = UserRepository(db_session)
         try:
             found_user = await repo.get_user_by_chat_id(chat_id)
-            if found_user is None:
-                raise HTTPException(status_code=404,
-                                    detail="Пользователь не найден.")
             return found_user
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))

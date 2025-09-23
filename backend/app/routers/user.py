@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import HTTPException
 
 from schemas.order import OrderResponse
-from schemas.create_order_schema import CreateOrderSchema
 from schemas.user import UserResponse
-from services.order_service import OrderService
+from services.order_service import OrderService, OrderCreate
 from services.user_service import UserService
 from dependencies import get_db
 
@@ -13,7 +13,7 @@ router = APIRouter(tags=["Пользователи"])
 
 @router.post("/orders/", summary="Создать новый заказ",
              response_model=OrderResponse)
-async def create_order(order_data: CreateOrderSchema,
+async def create_order(order: OrderCreate,
                        db: AsyncSession = Depends(get_db)):
     """
     ### Цель метода:
@@ -30,8 +30,13 @@ async def create_order(order_data: CreateOrderSchema,
     - **order_id**: Идентификатор созданного заказа.
     - **status**: Текущий статус заказа (по умолчанию `НОВЫЙ`).
     """
-    async with db as session:
-        return await OrderService.create_order(order_data, session)
+    try:
+        async with db as session:  # Здесь стартует транзакция
+            service = OrderService()
+            created_order = await service.create_order(order, session)
+            return created_order
+    except Exception as err:
+        raise HTTPException(status_code=400, detail=str(err))
 
 
 @router.get("/orders/{chat_id}",

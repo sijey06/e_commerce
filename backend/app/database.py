@@ -11,7 +11,7 @@ class Base(DeclarativeBase):
 
 # Создание движка для базы данных
 engine = create_async_engine(
-    DATABASE_URL.replace('postgresql', 'postgresql+asyncpg'), echo=True)
+    DATABASE_URL.replace('postgresql', 'postgresql+asyncpg'), echo=False)
 
 # Глобальная фабрика сессий
 SessionLocal = sessionmaker(

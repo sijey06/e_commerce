@@ -1,10 +1,10 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class UserCreate(BaseModel):
     first_name: str
     address: str
-    phone_number: str = Field(max_length=11, min_length=11)
+    phone_number: int
     chat_id: int
 
 

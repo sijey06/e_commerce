@@ -1,8 +1,6 @@
 from pydantic import BaseModel
 from typing import List
 
-from .product import ProductResponse
-
 
 class CartItemCreate(BaseModel):
     product_id: int
@@ -10,12 +8,11 @@ class CartItemCreate(BaseModel):
     chat_id: int
 
 
-class CartItemResponse(CartItemCreate):
+class CartItemResponse(BaseModel):
     id: int
     product_id: int
     quantity: int
     total_price: float
-    product: ProductResponse
 
     class Config:
         from_attributes = True

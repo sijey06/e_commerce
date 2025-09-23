@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from repositories.category_repository import CategoryRepository
-from schemas.category import CategoryCreate
+from schemas.category import CategoryCreate, CategoryResponse
 
 
 class CategoryService:
@@ -22,10 +22,9 @@ class CategoryService:
         repo = CategoryRepository(db_session)
         try:
             created_category = await repo.create_category(category_create)
-            return {
-                "message": "Категория создана успешно.",
-                "data": created_category
-            }
+            serialized_product = CategoryResponse.model_validate(
+                created_category)
+            return serialized_product
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
 

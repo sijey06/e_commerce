@@ -13,7 +13,10 @@ class ProductCreate(BaseModel):
 
 class ProductResponse(ProductCreate):
     id: int
-    categories: List[CategoryResponse]
+    name: str
+    description: str
+    price: float
+    photo_url: Optional[str]
 
     class Config:
         from_attributes = True

@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from schemas.cart import CartItemCreate, UpdateCartItemSchema
-from schemas.view_cart_schema import ViewCartSchema
+from schemas.cart import CartItemCreate, UpdateCartItemSchema, CartItemResponse, ViewCartSchema
 from services.cart_service import CartService
 from dependencies import get_db
 

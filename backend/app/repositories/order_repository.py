@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+
 from models.order import Order
-from schemas.order import OrderCreate
 from schemas.status import Status
 
 
@@ -11,9 +11,9 @@ class OrderRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_order(self, order_create: OrderCreate):
+    async def create_order(self, order_data: dict):
         """Создание нового заказа."""
-        db_order = Order(**order_create.model_dump())
+        db_order = Order(**order_data)
         self.session.add(db_order)
         await self.session.commit()
         await self.session.refresh(db_order)
