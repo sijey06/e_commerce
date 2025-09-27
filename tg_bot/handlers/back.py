@@ -6,6 +6,7 @@ from app import bot
 from keyboards.main_keyboard import create_main_keyboard
 from api_client import fetch
 from config import FAST_API_BASE_URL
+from texts import WELCOME_MESSAGE
 
 
 class NavigationHandlers:
@@ -20,7 +21,7 @@ class NavigationHandlers:
             await callback_query.message.delete()
             await bot.send_message(
                 chat_id=callback_query.message.chat.id,
-                text="Добро пожаловать в наш интернет-магазин!",
+                text=WELCOME_MESSAGE,
                 reply_markup=create_main_keyboard(
                     str(callback_query.from_user.id))
             )
