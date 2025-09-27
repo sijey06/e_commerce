@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from schemas.category import CategoryCreate, CategoryResponse
+from schemas.category import (CategoryCreate, CategoryResponse,
+                              CategoryResponseList)
 from services.category_service import CategoryService
 from dependencies import get_db
 
@@ -27,7 +28,7 @@ async def create_category(category: CategoryCreate,
 
 
 @router.get("/categories/", summary="Получение списка всех категорий",
-            response_model=list[CategoryResponse])
+            response_model=list[CategoryResponseList])
 async def list_categories(db: AsyncSession = Depends(get_db)):
     """
     ### Цель метода:

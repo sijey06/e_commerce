@@ -1,7 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List
-
-from .category import CategoryResponse
+from typing import Optional
 
 
 class ProductCreate(BaseModel):

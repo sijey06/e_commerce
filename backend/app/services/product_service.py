@@ -27,7 +27,10 @@ class ProductService:
                                                         category_id)
             serialized_product = ProductResponse.model_validate(
                 created_product)
-            return serialized_product
+            return {
+                "message": "Новый товар успешно создан.",
+                "data": serialized_product
+            }
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
 

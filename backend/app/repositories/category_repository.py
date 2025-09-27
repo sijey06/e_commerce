@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import joinedload
 from models.category import Category
 from schemas.category import CategoryCreate
 
@@ -20,12 +21,16 @@ class CategoryRepository:
 
     async def get_category_by_id(self, category_id: int):
         """Получить категорию по её ID."""
-        stmt = select(Category).where(Category.id == category_id)
+        stmt = (
+            select(Category)
+            .where(Category.id == category_id)
+            .options(joinedload(Category.products))
+        )
         result = await self.session.execute(stmt)
-        return result.scalar_one_or_none()
+        return result.unique().scalar_one_or_none()
 
     async def find_all_categories(self):
-        """Получить все доступные категории."""
-        stmt = select(Category)
+        """Получить товары выбранной категории."""
+        stmt = select(Category).options(joinedload(Category.products))
         result = await self.session.execute(stmt)
-        return result.scalars().all()
+        return result.unique().scalars().all()

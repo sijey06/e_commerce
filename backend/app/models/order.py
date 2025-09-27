@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import Integer, Enum, ForeignKey, String
+from sqlalchemy import Integer, BigInteger, Enum, ForeignKey, String
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from database import Base
@@ -16,7 +16,7 @@ class Order(Base):
     __tablename__ = "orders"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    user_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("users.id"))
     number: Mapped[str] = mapped_column(String, unique=True,
                                         nullable=False,
                                         default=generate_unique_order_number)
