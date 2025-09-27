@@ -10,6 +10,7 @@ def create_main_keyboard(user_chat_id: str) -> InlineKeyboardMarkup:
     builder.button(text="📌Каталог товаров", callback_data="catalog")
     builder.button(text="🔍Категории товаров", callback_data="categories")
     builder.button(text="🛒Корзина", callback_data="cart")
+    builder.button(text="📥 Мои заказы", callback_data="my_orders")
     builder.button(text="✅Оформить заказ", callback_data="order")
 
     if user_chat_id in ADMIN_CHATS:

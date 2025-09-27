@@ -41,7 +41,7 @@ async def create_order(order: OrderCreate,
 
 @router.get("/orders/{chat_id}",
             summary="Получить список заказов пользователя",
-            response_model=list[UserResponse])
+            response_model=list[OrderResponse])
 async def list_orders(chat_id: int, db: AsyncSession = Depends(get_db)):
     """
     ### Цель метода:

@@ -9,12 +9,14 @@ from handlers.back import NavigationHandlers
 from handlers.cart import add_to_cart
 from handlers.menu import handle_main_menu_buttons
 from handlers.product import show_product_details
+from handlers.orders import my_orders_handler
 
 # Создание экземпляра класса обработчиков навигации
 nav_handlers = NavigationHandlers(dp)
 nav_handlers.register()
 
 dp.message.register(cmd_start, CommandStart())
+dp.callback_query.register(my_orders_handler, F.data == "my_orders")
 dp.callback_query.register(admin_panel_handler, F.data == "admin_panel")
 dp.callback_query.register(add_to_cart, F.data.contains("addtocart_"))
 dp.callback_query.register(

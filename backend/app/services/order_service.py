@@ -127,6 +127,8 @@ class OrderService:
         repo = OrderRepository(db_session)
         try:
             user_orders = await repo.list_orders_by_user_id(user_id)
-            return user_orders
+            orders_list = [
+                OrderResponse.model_validate(order) for order in user_orders]
+            return orders_list
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
