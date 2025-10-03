@@ -1,35 +1,60 @@
 from dependencies import get_db
-from fastapi import APIRouter, Depends
-from schemas.order import OrderResponse
-from schemas.product import ProductCreate, ProductResponse
+from fastapi import APIRouter, Depends, HTTPException
+from schemas.order import OrderCreate, OrderResponse
 from schemas.status import OrderStatusUpdate
 from services.order_service import OrderService
-from services.product_service import ProductService
+from services.user_service import UserService
 from sqlalchemy.ext.asyncio import AsyncSession
 
-router = APIRouter(tags=["Админ-панель"])
+router = APIRouter(tags=["Заказы"])
 
 
-@router.post("/products/", summary="Создание нового товара",
-             response_model=ProductResponse)
-async def create_product(product: ProductCreate, category_id: int,
-                         db: AsyncSession = Depends(get_db)):
+@router.post("/orders/", summary="Создать новый заказ",
+             response_model=OrderResponse)
+async def create_order(order: OrderCreate,
+                       db: AsyncSession = Depends(get_db)):
     """
     ### Цель метода:
-    Создание нового товара.
+    Создание нового заказа пользователя.
 
     #### Входящие данные:
-    - `name`: Название товара.
-    - `description`: Описание товара.
-    - `price`: Цена товара.
-    - `photo_url`: Опциональный адрес фотографии товара.
+    - `first_name`: Имя заказчика.
+    - `address`: Адрес доставки.
+    - `phone_number`: Телефон заказчика.
+    - `chat_id`: Уникальный идентификатор чата пользователя.
 
     #### Ответ:
-    Информация о вновь созданном товаре.
+    Возвращает словарь с двумя ключевыми полями:
+    - **order_id**: Идентификатор созданного заказа.
+    - **status**: Текущий статус заказа (по умолчанию `НОВЫЙ`).
+    """
+    try:
+        async with db as session:
+            service = OrderService()
+            created_order = await service.create_order(order, session)
+            return created_order
+    except Exception as err:
+        raise HTTPException(status_code=400, detail=str(err))
+
+
+@router.get("/orders/{chat_id}",
+            summary="Получить список заказов пользователя",
+            response_model=list[OrderResponse])
+async def list_orders(chat_id: int, db: AsyncSession = Depends(get_db)):
+    """
+    ### Цель метода:
+    Получение списка заказов определенного пользователя.
+
+    #### Входящие данные:
+    - `chat_id`: Уникальный идентификатор чата пользователя.
+
+    #### Ответ:
+    Список объектов заказов пользователя, с информацией о каждом заказе.
     """
     async with db as session:
-        return await ProductService.create_new_product(product,
-                                                       category_id, session)
+        user = await UserService.fetch_user_by_chat_id(chat_id, session)
+        orders = await OrderService.list_orders_by_user_id(user.id, session)
+        return orders
 
 
 @router.get("/orders/", summary="Получение списка всех заказов",

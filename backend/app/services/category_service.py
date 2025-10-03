@@ -68,3 +68,51 @@ class CategoryService:
             return categories_list
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
+
+    @staticmethod
+    async def update_category(category_id: int, new_name: str, db_session):
+        """
+        Обновляет название категории.
+
+        Параметры:
+        - category_id (int): Идентификатор категории.
+        - new_name (str): Новое название категории.
+        - db_session: Текущая сессия базы данных.
+
+        Возвращает:
+        - Объект обновленной категории или ошибку 404,
+        если категория не найдена.
+        """
+        repo = CategoryRepository(db_session)
+        try:
+            updated_category = await repo.update_category(
+                category_id, new_name)
+            if updated_category is None:
+                raise HTTPException(status_code=404,
+                                    detail="Категория не найдена")
+            return updated_category
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=str(e))
+
+    @staticmethod
+    async def delete_category(category_id: int, db_session):
+        """
+        Удаляет категорию по её идентификатору.
+
+        Параметры:
+        - category_id (int): Идентификатор удаляемой категории.
+        - db_session: Текущая сессия базы данных.
+
+        Возвращает:
+        - Результат успешного удаления (True) или ошибку 404,
+        если категория не найдена.
+        """
+        repo = CategoryRepository(db_session)
+        try:
+            deleted_result = await repo.delete_category(category_id)
+            if not deleted_result:
+                raise HTTPException(status_code=404,
+                                    detail="Категория не найдена")
+            return {"message": f"Категория с id={category_id} успешно удалена"}
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=str(e))

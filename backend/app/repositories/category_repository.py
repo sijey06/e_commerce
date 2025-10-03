@@ -34,3 +34,26 @@ class CategoryRepository:
         stmt = select(Category).options(joinedload(Category.products))
         result = await self.session.execute(stmt)
         return result.unique().scalars().all()
+
+    async def update_category(self, category_id: int, new_name: str):
+        """Обновление названия категории по её ID."""
+        stmt = select(Category).where(Category.id == category_id)
+        result = await self.session.execute(stmt)
+        category_to_update = result.scalar_one_or_none()
+        if category_to_update is None:
+            return None
+        category_to_update.name = new_name
+        await self.session.commit()
+        await self.session.refresh(category_to_update)
+        return category_to_update
+
+    async def delete_category(self, category_id: int):
+        """Удаление категории по её ID."""
+        stmt = select(Category).where(Category.id == category_id)
+        result = await self.session.execute(stmt)
+        category_to_delete = result.scalar_one_or_none()
+        if category_to_delete is None:
+            return False
+        await self.session.delete(category_to_delete)
+        await self.session.commit()
+        return True

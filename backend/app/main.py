@@ -9,7 +9,7 @@ app = FastAPI(
 )
 
 # Подключение всех маршрутизаторов
-app.include_router(user.router)
+# app.include_router(user.router)
 app.include_router(product.router)
 app.include_router(category.router)
 app.include_router(cart.router)

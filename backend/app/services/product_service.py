@@ -73,3 +73,48 @@ class ProductService:
             return products_list
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
+
+    @staticmethod
+    async def update_product(product_id: int, updated_data: dict, db_session):
+        """
+        Обновляет информацию о существующем товаре.
+
+        Параметры:
+        - product_id (int): Идентификатор товара.
+        - updated_data (dict): Данные для обновления товара.
+        - db_session: Текущая сессия базы данных.
+
+        Возвращает:
+        - Объект обновленного товара или ошибку 404, если товар не найден.
+        """
+        repo = ProductRepository(db_session)
+        try:
+            updated_product = await repo.update_product(
+                product_id, updated_data)
+            if updated_product is None:
+                raise HTTPException(status_code=404, detail="Товар не найден")
+            return updated_product
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=str(e))
+
+    @staticmethod
+    async def delete_product(product_id: int, db_session):
+        """
+        Удаляет товар по его идентификатору.
+
+        Параметры:
+        - product_id (int): Идентификатор удаляемого товара.
+        - db_session: Текущая сессия базы данных.
+
+        Возвращает:
+        - Результат успешного удаления (True) или ошибка 404,
+        если товар не найден.
+        """
+        repo = ProductRepository(db_session)
+        try:
+            deleted_result = await repo.delete_product(product_id)
+            if not deleted_result:
+                raise HTTPException(status_code=404, detail="Товар не найден")
+            return {"message": f"Товар с id={product_id} успешно удалён."}
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=str(e))

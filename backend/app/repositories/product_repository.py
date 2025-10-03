@@ -37,3 +37,25 @@ class ProductRepository:
         stmt = select(Product).options(joinedload(Product.categories))
         result = await self.session.execute(stmt)
         return result.unique().scalars().all()
+
+    async def update_product(self, product_id: int, updated_data: dict):
+        """Обновляет существующий продукт"""
+        stmt = select(Product).where(Product.id == product_id)
+        result = await self.session.execute(stmt)
+        product_to_update = result.scalar_one_or_none()
+
+        for key, value in updated_data.items():
+            setattr(product_to_update, key, value)
+
+        await self.session.commit()
+        await self.session.refresh(product_to_update)
+        return product_to_update
+
+    async def delete_product(self, product_id: int):
+        """Удаляет продукт по его идентификатору"""
+        stmt = select(Product).where(Product.id == product_id)
+        result = await self.session.execute(stmt)
+        product_to_delete = result.scalar_one_or_none()
+        await self.session.delete(product_to_delete)
+        await self.session.commit()
+        return True
