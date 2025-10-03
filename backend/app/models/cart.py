@@ -1,7 +1,6 @@
-from sqlalchemy import Integer, BigInteger, Float, ForeignKey
-from sqlalchemy.orm import relationship, Mapped, mapped_column
-
 from database import Base
+from sqlalchemy import BigInteger, Float, ForeignKey, Integer
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class CartItem(Base):
@@ -14,6 +13,6 @@ class CartItem(Base):
     quantity: Mapped[int] = mapped_column(Integer, default=1)
     total_price: Mapped[float] = mapped_column(Float, nullable=True)
 
-    # Связи
+    # Связи с другими моделями
     user = relationship("User", back_populates="user_cart_items")
     product = relationship("Product")

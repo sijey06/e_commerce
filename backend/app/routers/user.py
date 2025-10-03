@@ -1,12 +1,11 @@
-from fastapi import APIRouter, Depends
+from dependencies import get_db
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import HTTPException
 
 from schemas.order import OrderResponse
-from schemas.user import UserResponse
-from services.order_service import OrderService, OrderCreate
+from services.order_service import OrderCreate, OrderService
 from services.user_service import UserService
-from dependencies import get_db
+
 
 router = APIRouter(tags=["Пользователи"])
 
@@ -31,7 +30,7 @@ async def create_order(order: OrderCreate,
     - **status**: Текущий статус заказа (по умолчанию `НОВЫЙ`).
     """
     try:
-        async with db as session:  # Здесь стартует транзакция
+        async with db as session:
             service = OrderService()
             created_order = await service.create_order(order, session)
             return created_order

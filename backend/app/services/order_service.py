@@ -1,12 +1,10 @@
 from fastapi import HTTPException
-
-from services.user_service import UserService
-from repositories.order_repository import OrderRepository
-from repositories.cart_repository import CartRepository
 from models.product import Product
+from repositories.cart_repository import CartRepository
+from repositories.order_repository import OrderRepository
 from schemas.order import OrderCreate, OrderResponse
-from schemas.user import UserCreate
 from schemas.status import OrderStatusUpdate
+from services.user_service import UserService
 
 
 class OrderService:

@@ -1,7 +1,7 @@
-from sqlalchemy import Integer, String
-from sqlalchemy.orm import relationship, Mapped, mapped_column
-
 from database import Base
+from sqlalchemy import Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from .associations import product_category
 
 

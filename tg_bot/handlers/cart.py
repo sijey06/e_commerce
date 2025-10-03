@@ -36,7 +36,6 @@ async def add_to_cart(callback_query: CallbackQuery):
         "quantity": quantity,
         "chat_id": chat_id
     }
-    print(payload)
 
     api_endpoint = f"{FAST_API_BASE_URL}/item-cart/"
     async with aiohttp.ClientSession() as session:
@@ -183,30 +182,28 @@ async def show_cart(message: Union[Message, CallbackQuery], chat_id: int):
 
     if len(cart_items) > 0:
         cart_list = []
+        separator = "-" * 30 + "\n"
+        header = "🛒 Ваша корзина\n"
+        footer = f"\n💸 Общая сумма: {total_amount} руб."
+
         for item in cart_items:
             product_url = f"{FAST_API_BASE_URL}/products/{item['product_id']}"
             product = await fetch(product_url)
-            cart_list.append(f"""
-- Товар: {product['name']},
-количество: {item['quantity']},
-сумма: {item['total_price']} руб.
-""")
+            formatted_item = (
+                f"🎁 {product['name']}\n"
+                f"🧻 Кол-во: {item['quantity']}\n"
+                f"💰 Стоимость: {item['total_price']} руб.\n"
+            )
+            cart_list.append(separator + formatted_item)
+
+        final_output = '\n'.join([header, *cart_list, footer])
 
         cart_keyboard = InlineKeyboardBuilder()
-        cart_keyboard.button(text="✅ Заказать", callback_data="order")
-        cart_keyboard.button(text="🖊 Редактировать корзину",
-                             callback_data="edit_cart")
+        cart_keyboard.button(text="✅ Оформить заказ", callback_data="order")
+        cart_keyboard.button(text="🖊 Редактировать корзину", callback_data="edit_cart")
         cart_keyboard.button(text="↩️ Назад", callback_data="back_to_home")
         cart_keyboard.adjust(2)
 
-        await message.answer(
-            "\n".join([
-                "Ваш заказ:",
-                *cart_list,
-                f"\nОбщая сумма заказа: {total_amount} руб."
-            ]),
-            reply_markup=cart_keyboard.as_markup(),
-            parse_mode='HTML'
-        )
+        await message.answer(final_output, reply_markup=cart_keyboard.as_markup(), parse_mode='MarkdownV2')
     else:
         await message.answer("Ваша корзина пуста.")

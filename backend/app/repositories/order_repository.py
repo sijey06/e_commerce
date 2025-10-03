@@ -1,8 +1,7 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-
 from models.order import Order
 from schemas.status import Status
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 
 class OrderRepository:

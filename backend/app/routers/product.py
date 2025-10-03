@@ -1,9 +1,8 @@
+from dependencies import get_db
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from schemas.product import ProductResponse
 from services.product_service import ProductService
-from dependencies import get_db
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(tags=["Продукты"])
 

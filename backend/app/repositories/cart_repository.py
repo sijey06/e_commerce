@@ -1,12 +1,13 @@
 from typing import List
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
+
 from models.cart import CartItem
 from models.product import Product
-from services.user_service import UserService
-from schemas.user import UserCreate
 from schemas.cart import CartItemCreate, CartItemResponse, UpdateCartItemSchema
+from schemas.user import UserCreate
+from services.user_service import UserService
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 
 class CartRepository:

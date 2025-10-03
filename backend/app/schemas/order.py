@@ -1,6 +1,6 @@
-from pydantic import BaseModel
 from typing import List
-from pydantic import Field
+
+from pydantic import BaseModel, Field
 
 from .product import ProductResponse
 from .status import Status

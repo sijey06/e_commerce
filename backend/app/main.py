@@ -1,11 +1,5 @@
 from fastapi import FastAPI
-from routers import (
-    user,
-    product,
-    category,
-    cart,
-    order
-)
+from routers import cart, category, order, product, user
 
 # Создание экземпляра FastAPI
 app = FastAPI(

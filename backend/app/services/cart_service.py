@@ -1,8 +1,9 @@
 from typing import Any, Dict
+
 from fastapi import HTTPException
 from repositories.cart_repository import CartRepository
-from schemas.cart import (CartItemCreate, UpdateCartItemSchema,
-                          CartItemResponse, ViewCartSchema)
+from schemas.cart import (CartItemCreate, CartItemResponse,
+                          UpdateCartItemSchema, ViewCartSchema)
 
 
 class CartService:

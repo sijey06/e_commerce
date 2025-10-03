@@ -1,10 +1,9 @@
+from dependencies import get_db
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-
 from schemas.category import (CategoryCreate, CategoryResponse,
                               CategoryResponseList)
 from services.category_service import CategoryService
-from dependencies import get_db
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(tags=["Категории"])
 

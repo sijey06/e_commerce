@@ -1,8 +1,8 @@
+from models.category import Category
+from schemas.category import CategoryCreate
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload
-from models.category import Category
-from schemas.category import CategoryCreate
 
 
 class CategoryRepository:

@@ -1,7 +1,6 @@
 from typing import List
 
 from pydantic import BaseModel
-
 from schemas.product import ProductResponse
 
 

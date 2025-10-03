@@ -1,12 +1,11 @@
+from dependencies import get_db
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from schemas.product import ProductCreate, ProductResponse
 from schemas.order import OrderResponse
+from schemas.product import ProductCreate, ProductResponse
 from schemas.status import OrderStatusUpdate
 from services.order_service import OrderService
 from services.product_service import ProductService
-from dependencies import get_db
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(tags=["Админ-панель"])
 

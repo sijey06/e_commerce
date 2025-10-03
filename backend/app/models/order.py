@@ -1,10 +1,10 @@
 import uuid
 
-from sqlalchemy import Integer, BigInteger, Enum, ForeignKey, String
-from sqlalchemy.orm import relationship, Mapped, mapped_column
-
 from database import Base
 from enums.status import Status
+from sqlalchemy import BigInteger, Enum, ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from .associations import order_product
 
 
@@ -24,7 +24,7 @@ class Order(Base):
         Enum(Status, name="enum_status", native_enum=True),
         nullable=False, default=Status.NEW)
 
-    # Связи
+    # Связи с другими моделями
     user = relationship("User", back_populates="orders")
     ordered_products = relationship("Product", secondary="order_product",
                                     back_populates="orders", lazy='selectin')

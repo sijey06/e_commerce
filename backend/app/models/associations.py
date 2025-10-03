@@ -1,6 +1,5 @@
-from sqlalchemy import Table, Column, Integer, ForeignKey
 from database import Base
-
+from sqlalchemy import Column, ForeignKey, Integer, Table
 
 # Ассоциация товаров и категорий
 product_category = Table(
