@@ -1,8 +1,13 @@
+from typing import TYPE_CHECKING
+
 from database import Base
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .associations import order_product, product_category
+from .associations import order_product
+
+if TYPE_CHECKING:
+    from models.category import Category
 
 
 class Product(Base):
@@ -15,7 +20,11 @@ class Product(Base):
     photo_url: Mapped[str] = mapped_column(String, nullable=True)
 
     # Связи с другими моделями
-    categories = relationship("Category", secondary="product_category",
-                              back_populates="products")
+    category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"))
+    category: Mapped["Category"] = relationship(
+        back_populates="products", lazy="joined")
     orders = relationship("Order", secondary="order_product",
-                          back_populates="ordered_products")
+                          back_populates="ordered_products", lazy="selectin")
+
+    def __str__(self):
+        return self.name

@@ -1,6 +1,8 @@
 from fastapi import HTTPException
 from repositories.product_repository import ProductRepository
 from schemas.product import ProductCreate, ProductResponse
+from sqlalchemy import select
+from models.category import Category
 
 
 class ProductService:
@@ -23,14 +25,21 @@ class ProductService:
         """
         repo = ProductRepository(db_session)
         try:
-            created_product = await repo.create_product(product_create,
-                                                        category_id)
-            serialized_product = ProductResponse.model_validate(
-                created_product)
-            return {
-                "message": "Новый товар успешно создан.",
-                "data": serialized_product
+            created_product = await repo.create_product(
+                product_create, category_id)
+            category_stmt = select(Category).where(Category.id == category_id)
+            category = await db_session.execute(category_stmt)
+            category_obj = category.scalar_one_or_none()
+            product_dict = {
+                "id": created_product.id,
+                "name": created_product.name,
+                "description": created_product.description,
+                "price": created_product.price,
+                "photo_url": created_product.photo_url,
+                "categories": category_obj
             }
+            serialized_product = ProductResponse.model_validate(product_dict)
+            return serialized_product
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
 

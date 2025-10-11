@@ -5,6 +5,7 @@ from schemas.category import (CategoryCreate, CategoryResponse,
 from services.category_service import CategoryService
 from sqlalchemy.ext.asyncio import AsyncSession
 
+
 router = APIRouter(tags=["Категории"])
 
 

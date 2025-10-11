@@ -16,3 +16,6 @@ class User(Base):
     # Связи с другими моделями
     user_cart_items = relationship("CartItem", back_populates="user")
     orders = relationship("Order", back_populates="user")
+
+    def __str__(self):
+        return str(self.chat_id)

@@ -3,7 +3,7 @@ from models.product import Product
 from schemas.product import ProductCreate
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 
 
 class ProductRepository:
@@ -18,9 +18,8 @@ class ProductRepository:
         category = await self.session.get(Category, category_id)
         if category is None:
             raise Exception("Категория не найдена.")
-
         db_product = Product(**product_create.model_dump())
-        db_product.categories.append(category)
+        db_product.category.append(category)
         self.session.add(db_product)
         await self.session.commit()
         await self.session.refresh(db_product)
@@ -28,13 +27,16 @@ class ProductRepository:
 
     async def get_product_by_id(self, product_id: int):
         """Получение товара по его ID."""
-        stmt = select(Product).where(Product.id == product_id)
+        stmt = select(
+            Product).options(
+                selectinload(
+                    Product.category)).where(Product.id == product_id)
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
     async def get_all_products(self):
         """Получение всех товаров."""
-        stmt = select(Product).options(joinedload(Product.categories))
+        stmt = select(Product).options(joinedload(Product.category))
         result = await self.session.execute(stmt)
         return result.unique().scalars().all()
 

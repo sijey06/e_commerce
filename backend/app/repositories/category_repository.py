@@ -2,7 +2,7 @@ from models.category import Category
 from schemas.category import CategoryCreate
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, subqueryload
 
 
 class CategoryRepository:
@@ -24,7 +24,7 @@ class CategoryRepository:
         stmt = (
             select(Category)
             .where(Category.id == category_id)
-            .options(joinedload(Category.products))
+            .options(subqueryload(Category.products))
         )
         result = await self.session.execute(stmt)
         return result.unique().scalar_one_or_none()

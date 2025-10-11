@@ -1,12 +1,15 @@
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from pydantic import BaseModel
+
+if TYPE_CHECKING:
+    from schemas.category import CategoryResponseList
 
 
 class ProductCreate(BaseModel):
     name: str
     description: str
-    price: float
+    price: int
     photo_url: Optional[str]
 
 
@@ -14,7 +17,8 @@ class ProductResponse(ProductCreate):
     id: int
     name: str
     description: str
-    price: float
+    price: int
+    category: "CategoryResponseList"
     photo_url: Optional[str]
 
     class Config:

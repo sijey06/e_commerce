@@ -1,8 +1,10 @@
+from typing import List, TYPE_CHECKING
+
 from database import Base
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from .associations import product_category
+from models.product import Product
 
 
 class Category(Base):
@@ -12,5 +14,8 @@ class Category(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
 
     # Связь с товарами
-    products = relationship("Product", secondary="product_category",
-                            back_populates="categories")
+    products: Mapped[List[Product]] = relationship(
+        back_populates="category", lazy="selectin")
+
+    def __str__(self):
+        return self.name

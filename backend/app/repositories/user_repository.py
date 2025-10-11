@@ -23,3 +23,11 @@ class UserRepository:
         stmt = select(User).where(User.chat_id == chat_id)
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
+
+    async def get_all_users(self):
+        """
+        Выборка всех пользователей из таблицы.
+        """
+        stmt = select(User)
+        result = await self.session.execute(stmt)
+        return result.scalars().all()

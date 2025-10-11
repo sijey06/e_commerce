@@ -9,10 +9,14 @@ class CartItem(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     chat_id: Mapped[int] = mapped_column(BigInteger,
                                          ForeignKey("users.chat_id"))
-    product_id: Mapped[int] = mapped_column(Integer, ForeignKey("products.id"))
+    product_id: Mapped[int] = mapped_column(Integer, ForeignKey(
+        "products.id", ondelete="CASCADE"))
     quantity: Mapped[int] = mapped_column(Integer, default=1)
     total_price: Mapped[float] = mapped_column(Float, nullable=True)
 
     # Связи с другими моделями
     user = relationship("User", back_populates="user_cart_items")
     product = relationship("Product")
+
+    def __str__(self):
+        return str(self.chat_id)

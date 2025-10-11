@@ -2,7 +2,7 @@ from logging.config import fileConfig
 
 from alembic import context
 from database import Base
-from models.associations import order_product, product_category
+from models.associations import order_product
 from models.cart import CartItem
 from models.category import Category
 from models.order import Order

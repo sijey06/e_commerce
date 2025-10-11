@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 from fastapi import HTTPException
+
 from repositories.cart_repository import CartRepository
 from schemas.cart import (CartItemCreate, CartItemResponse,
                           UpdateCartItemSchema, ViewCartSchema)
@@ -19,14 +20,13 @@ class CartService:
         - db_session: Текущая сессия базы данных.
 
         Возвращает:
-        - Словарь с результатом операции и статусом.
+        - Объект модели результата добавления товара.
         """
         repo = CartRepository(db_session)
         try:
             created_cartitem = await repo.add_to_cart(cart_item)
-            serialized_cartitem = CartItemResponse.model_validate(
+            return CartItemResponse.model_validate(
                 created_cartitem).model_dump()
-            return serialized_cartitem
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
 
@@ -40,17 +40,15 @@ class CartService:
         - db_session: Текущая сессия базы данных.
 
         Возвращает:
-        - Список элементов корзины пользователя.
+        - Содержимое корзины пользователя.
         """
         repo = CartRepository(db_session)
         try:
             items = await repo.get_cart_items_by_user_id(chat_id)
-            cart_items = []
-            grand_total = 0.0
-            for item in items:
-                cart_item = CartItemResponse.model_validate(item)
-                cart_items.append(cart_item)
-                grand_total += item.total_price
+            cart_items = [
+                CartItemResponse.model_validate(item) for item in items
+            ]
+            grand_total = sum(item.total_price for item in items)
             return ViewCartSchema(cart_items=cart_items,
                                   grand_total=grand_total)
         except Exception as e:
@@ -70,15 +68,13 @@ class CartService:
         - db_session: Текущая сессия базы данных.
 
         Возвращает:
-        - Словарь с результатом операции и статусом.
+        - Результат операции и статус.
         """
         repo = CartRepository(db_session)
         try:
             updated_item = await repo.update_cart_item(chat_id, item_id, data)
-            return {
-                "message": "Элемент корзины успешно обновлён.",
-                "data": updated_item
-            }
+            return {"message": "Элемент корзины успешно обновлен.",
+                    "data": updated_item}
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
 
@@ -94,14 +90,11 @@ class CartService:
         - db_session: Текущая сессия базы данных.
 
         Возвращает:
-        - Словарь с результатом операции и статусом.
+        - Результат операции и статус.
         """
         repo = CartRepository(db_session)
         try:
-            removed_item = await repo.remove_from_cart(chat_id, item_id)
-            return {
-                "message": "Элемент успешно удалён из корзины.",
-                "data": removed_item
-            }
+            await repo.remove_from_cart(chat_id, item_id)
+            return {"message": "Элемент успешно удалён из корзины."}
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
