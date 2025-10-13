@@ -3,11 +3,12 @@ from aiogram_dialog.widgets.kbd import Button, Column, Select
 from aiogram_dialog.widgets.text import Const, Format
 
 from config.settings import API_URL
-from handlers.item_cart import handle_add_to_cart
+from handlers.item_cart import CartService
 from handlers.products import ProductService
 from states.main import MainSG
 
 service = ProductService(API_URL)
+service_item = CartService(API_URL)
 
 # Окно списка товаров
 product_list_window = Window(
@@ -37,7 +38,7 @@ product_detail_window = Window(
 """),
     Column(
         Button(Const("🛒 Добавить в корзину"), id="handle_add_to_cart",
-               on_click=handle_add_to_cart),
+               on_click=service_item.handle_add_to_cart),
         Button(Const("↩️ Вернуться в каталог"), id="back",
                on_click=lambda c, b, m: m.switch_to(MainSG.products)),
     ),

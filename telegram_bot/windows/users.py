@@ -25,7 +25,8 @@ profile_window = Window(
                on_click=lambda c, b, m: m.switch_to(MainSG.edit_address)),
         Button(Const("📞 Редактировать Телефон"), id="edit_phone_number",
                on_click=lambda c, b, m: m.switch_to(MainSG.edit_phone_number)),
-        Button(Const("📦 Мои заказы"), id="my_orders"),
+        Button(Const("📦 Мои заказы"), id="my_orders",
+               on_click=lambda c, b, m: m.switch_to(MainSG.my_orders)),
         Button(Const("⬅️ В главное меню"), id="back_to_main",
                on_click=lambda c, b, dm: dm.back())
     ),

@@ -11,6 +11,8 @@ from windows.categories import categories_detail_window, categories_list_window
 from windows.item_cart import (change_quantity_window, edit_cart_window,
                                item_cart_window, product_detail_view_window)
 from windows.main import main_window
+from windows.orders import (order_confirmation_window, confirmation_window,
+                            my_orders_window)
 from windows.products import product_detail_window, product_list_window
 from windows.users import (edit_address_window, edit_first_name_window,
                            edit_phone_number_window, profile_window)
@@ -25,7 +27,8 @@ async def main():
                     product_detail_view_window, change_quantity_window,
                     categories_detail_window, profile_window,
                     edit_address_window, edit_first_name_window,
-                    edit_phone_number_window)
+                    edit_phone_number_window, order_confirmation_window,
+                    confirmation_window, my_orders_window)
     dp = Dispatcher(storage=storage)
     dp.include_router(dialog)
     setup_dialogs(dp)

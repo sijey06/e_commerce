@@ -11,8 +11,10 @@ class MainSG(StatesGroup):
     edit_cart = State()                # Меню редактирования корзины
     edit_cart_product = State()        # Меню редактирования товара в корзине
     change_quantity = State()          # Меню изменения количества товара
-    orders = State()                   # Меню заказов
-    create_orders = State()            # Меню оформления заказа
+    orders = State()
+    my_orders = State()                   # Меню заказов
+    confirm_order = State()
+    confirmation = State()            # Меню оформления заказа
     profile = State()                  # Личный кабинет
     edit_first_name = State()          # Меню редактирования имени
     edit_address = State()              # Меню редактирования адреса

@@ -1,0 +1,13 @@
+.git
+venv
+__pycache__
+*.pyc
+*.log
+.coverage
+.npmrc
+.idea
+.env
+*.sqlite3
+Dockerfile*
+docker-compose.yaml
+*.db

@@ -21,6 +21,7 @@ app.include_router(cart.router)
 app.include_router(order.router)
 app.include_router(user.router)
 
+# Маршруты Админ панели
 admin = Admin(app, engine)
 admin.add_view(UserAdmin)
 admin.add_view(ProductAdmin)

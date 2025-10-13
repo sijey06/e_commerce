@@ -4,10 +4,11 @@ from aiogram_dialog.widgets.text import Const, Format
 
 from config.settings import API_URL
 from handlers.category import CategoryService
-from handlers.products import product_selected
+from handlers.products import ProductService
 from states.main import MainSG
 
 service = CategoryService(API_URL)
+service_product = ProductService(API_URL)
 
 # Окно списка категорий
 categories_list_window = Window(
@@ -34,7 +35,7 @@ categories_detail_window = Window(
             Format("🎁 {item[name]}"),
             items="products",
             item_id_getter=lambda x: x["id"],
-            on_click=product_selected,
+            on_click=service_product.product_selected,
             id="product_select"
         ),
         Button(Const("↩️ Назад к категориям"), id="back",

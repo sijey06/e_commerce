@@ -13,7 +13,8 @@ service = CartService(API_URL)
 item_cart_window = Window(
     Format("{products}"),
     Column(
-        Button(Const("✅ Оформить заказ"), id="create_order"),
+        Button(Const("🛍️ Оформить заказ"), id="create_order",
+               on_click=lambda c, b, m: m.switch_to(MainSG.confirm_order)),
         Button(Const("🔄 Редактировать корзину"), id="edit_cart",
                on_click=lambda c, b, m: m.switch_to(MainSG.edit_cart)),
         Button(Const("↩️ В основное меню"), id="main_menu",

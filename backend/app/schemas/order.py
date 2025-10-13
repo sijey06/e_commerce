@@ -20,6 +20,7 @@ class OrderResponse(BaseModel):
     number: str
     status: Status
     ordered_products: List[ProductResponse]
+    total_amount: int
 
     class Config:
         from_attributes = True
